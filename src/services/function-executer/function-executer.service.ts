@@ -9,8 +9,6 @@ export class FunctionExecuterService {
   public async execute(functionVersion: FunctionVersionDto, args: Array<unknown>) {
     const { functionId, code } = functionVersion;
 
-    console.log('body', functionVersion);
-
     const createLoggerFunction = (type: keyof typeof console) => {
       return (...args) => {
         this.logger.log('log from function', {
@@ -37,11 +35,11 @@ export class FunctionExecuterService {
     const module = new vm.SourceTextModule(code, { context });
 
     await module.link(() => {
-      throw new Error('test');
+      throw new Error('could not find module code');
     });
 
     const moduleExports = (module.namespace as { run: (...args: Array<unknown>) => Promise<unknown> });
 
-    return await moduleExports.run();
+    return await moduleExports.run(args);
   }
 }

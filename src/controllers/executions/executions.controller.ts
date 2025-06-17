@@ -1,8 +1,9 @@
-import { Body, Controller, Logger, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Param, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { RunExecutionDto } from "../../models/RunExecution.model.js";
 import { FunctionServerService } from "../../services/function-server/function-server.service.js";
 import { FunctionExecuterService } from "../../services/function-executer/function-executer.service.js";
+import { FunctionExecuteQueryParams } from "../../services/function-executer/function-executer.model.js";
 
 @ApiTags('executions')
 @Controller({
@@ -29,12 +30,22 @@ export class ExecutionsController {
   })
   public async runExecution(
     @Body() body: RunExecutionDto,
-    @Query() wait: boolean,
+    @Query() query: FunctionExecuteQueryParams,
     @Param('functionId') functionId: string,
   ) {
     const functionVersion = await this.functionServerService.getVersion(functionId);
 
-    return await this.functionExecuterService.execute(functionVersion, body.arguments);
+    const promise = this.functionExecuterService.execute(functionVersion, body.arguments);
+
+    console.log('wait', query, typeof query.wait);
+
+    if (query.wait) {
+      return await promise;
+    }
+
+    return new Response(null, {
+      status: 202,
+    });
   }
 
   @Post('versions/:versionId/executions')
@@ -53,12 +64,20 @@ export class ExecutionsController {
   })
   public async runVersionExecution(
     @Body() body: RunExecutionDto,
-    @Query() wait: boolean,
+    @Query() query: FunctionExecuteQueryParams,
     @Param('functionId') functionId: string,
     @Param('versionId') versionId: string,
   ) {
     const functionVersion = await this.functionServerService.getVersion(functionId, versionId);
 
-    return await this.functionExecuterService.execute(functionVersion, body.arguments);
+    const promise = this.functionExecuterService.execute(functionVersion, body.arguments);
+
+    if (query.wait) {
+      return await promise;
+    }
+
+    return new Response(null, {
+      status: 202,
+    });
   }
 }
