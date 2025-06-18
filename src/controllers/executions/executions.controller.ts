@@ -34,8 +34,11 @@ export class ExecutionsController {
     @Param('functionId') functionId: string,
   ) {
     const functionVersion = await this.functionServerService.getVersion(functionId);
+    const workerMeta = await this.functionServerService.getWorkerMetadata();
 
-    const promise = this.functionExecuterService.execute(functionVersion, body.arguments);
+    console.log('workerMeta', workerMeta);
+
+    const promise = this.functionExecuterService.execute(functionVersion, workerMeta, body.arguments);
 
     console.log('wait', query, typeof query.wait);
 
@@ -69,8 +72,9 @@ export class ExecutionsController {
     @Param('versionId') versionId: string,
   ) {
     const functionVersion = await this.functionServerService.getVersion(functionId, versionId);
+    const workerMeta = await this.functionServerService.getWorkerMetadata();
 
-    const promise = this.functionExecuterService.execute(functionVersion, body.arguments);
+    const promise = this.functionExecuterService.execute(functionVersion, workerMeta, body.arguments);
 
     if (query.wait) {
       return await promise;

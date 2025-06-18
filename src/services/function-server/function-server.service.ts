@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ModuleConfigurationService } from "../../fsarch/configuration/module/module-configuration.service.js";
 import { ConfigFunctionServerType } from "../../types/ConfigFunctionServerType.type.js";
 import { decodeJwt } from "jose";
-import { FunctionVersionDto } from "./function-server.types.js";
+import { FunctionVersionDto, WorkerMetaDto } from "./function-server.types.js";
 
 @Injectable()
 export class FunctionServerService {
@@ -51,6 +51,23 @@ export class FunctionServerService {
     }
 
     return accessToken;
+  }
+
+  public async getWorkerMetadata(): Promise<WorkerMetaDto> {
+    const accessToken = await this.getAccessToken();
+
+    const { url } = this.functionServerConfigService.get();
+
+    const response = await fetch(`${url}/v1/.meta/worker`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const responseBody = await response.json();
+
+    return responseBody;
   }
 
   public async getVersion(functionId: string, versionId: string = 'active'): Promise<FunctionVersionDto> {
