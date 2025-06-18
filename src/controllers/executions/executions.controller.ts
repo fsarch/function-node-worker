@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Logger, NotFoundException, Param, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
 import { RunExecutionDto } from "../../models/RunExecution.model.js";
 import { FunctionServerService } from "../../services/function-server/function-server.service.js";
@@ -12,6 +12,8 @@ import { FunctionExecuteQueryParams } from "../../services/function-executer/fun
 })
 @ApiBearerAuth()
 export class ExecutionsController {
+  private readonly logger = new Logger(ExecutionsController.name);
+
   constructor(
     private readonly functionServerService: FunctionServerService,
     private readonly functionExecuterService: FunctionExecuterService,
@@ -34,16 +36,28 @@ export class ExecutionsController {
     @Param('functionId') functionId: string,
   ) {
     const functionVersion = await this.functionServerService.getVersion(functionId);
+    if (!functionVersion) {
+      this.logger.warn('function version not found', {
+        functionId,
+      });
+      throw new NotFoundException();
+    }
+
     const workerMeta = await this.functionServerService.getWorkerMetadata();
 
-    console.log('workerMeta', workerMeta);
-
     const promise = this.functionExecuterService.execute(functionVersion, workerMeta, body.arguments);
-
-    console.log('wait', query, typeof query.wait);
+    promise.catch((error) => {
+      this.logger.error('error while executing function', {
+        error,
+        functionId,
+        versionId: functionVersion.id,
+      });
+    });
 
     if (query.wait) {
-      return await promise;
+      return {
+        result: await promise,
+      };
     }
 
     return new Response(null, {
@@ -72,12 +86,29 @@ export class ExecutionsController {
     @Param('versionId') versionId: string,
   ) {
     const functionVersion = await this.functionServerService.getVersion(functionId, versionId);
+    if (!functionVersion) {
+      this.logger.warn('function version not found', {
+        functionId,
+        versionId,
+      });
+      throw new NotFoundException();
+    }
+
     const workerMeta = await this.functionServerService.getWorkerMetadata();
 
     const promise = this.functionExecuterService.execute(functionVersion, workerMeta, body.arguments);
+    promise.catch((error) => {
+      this.logger.error('error while executing function', {
+        error,
+        functionId,
+        versionId,
+      });
+    });
 
     if (query.wait) {
-      return await promise;
+      return {
+        result: await promise,
+      };
     }
 
     return new Response(null, {

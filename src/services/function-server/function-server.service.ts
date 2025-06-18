@@ -81,6 +81,9 @@ export class FunctionServerService {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+    if (!response) {
+      throw new Error('could not get function version');
+    }
 
     const responseBody = await response.json();
 
