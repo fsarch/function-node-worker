@@ -16,7 +16,7 @@ export class FunctionServerService {
   ) {}
 
   public async getAccessToken() {
-    if (this.accessTokenCache && this.accessTokenCache.expirationTime < (Date.now() - (60 * 1000))) {
+    if (this.accessTokenCache && this.accessTokenCache.expirationTime > (Date.now() - (60 * 1000))) {
       return this.accessTokenCache.accessToken;
     }
 
