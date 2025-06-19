@@ -6,6 +6,7 @@ import { TApiOptions } from "./_utils/api/api.type.js";
 import { ModuleConfigurationService } from "../../fsarch/configuration/module/module-configuration.service.js";
 import { ConfigWorkerAuthType } from "../../types/ConfigWorkerAuth.type.js";
 import { decodeJwt } from "jose";
+import { serializeError } from "serialize-error";
 
 @Injectable()
 export class FunctionExecuterService {
@@ -99,6 +100,11 @@ export class FunctionExecuterService {
         warn: createLoggerFunction('warn'),
         error: createLoggerFunction('error'),
       },
+      btoa: (value) => Buffer.from(value, 'utf-8').toString('base64'),
+      atob: (value) => Buffer.from(value, 'base64').toString('utf-8'),
+      TextEncoder: TextEncoder,
+      TextDecoder: TextDecoder,
+      Blob,
       fsarch: fsarchApi,
     };
 
@@ -112,6 +118,16 @@ export class FunctionExecuterService {
 
     const moduleExports = (module.namespace as { run: (...args: Array<unknown>) => Promise<unknown> });
 
-    return await moduleExports.run(args);
+    try {
+      return {
+        isError: false,
+        result: await moduleExports.run(args),
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        error: serializeError(error),
+      };
+    }
   }
 }

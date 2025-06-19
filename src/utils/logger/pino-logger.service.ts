@@ -24,6 +24,7 @@ export class PinoLogger extends ConsoleLogger {
 
   public Error(message: string, data?: Record<string, any>) {
     const logData = { ...data };
+    console.log(message, data);
     if (logData && 'error' in logData && isErrorLike(logData.error)) {
       logData.error = serializeError(logData.error);
     }

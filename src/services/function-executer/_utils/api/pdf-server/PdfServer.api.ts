@@ -56,7 +56,7 @@ export class PdfServerApi {
     const data = await response.arrayBuffer();
 
     return {
-      data: new Uint8Array(data),
+      data,
     };
   }
 }

@@ -55,9 +55,7 @@ export class ExecutionsController {
     });
 
     if (query.wait) {
-      return {
-        result: await promise,
-      };
+      return await promise;
     }
 
     return new Response(null, {
@@ -106,9 +104,7 @@ export class ExecutionsController {
     });
 
     if (query.wait) {
-      return {
-        result: await promise,
-      };
+      return await promise;
     }
 
     return new Response(null, {
