@@ -13,7 +13,18 @@ export type WorkerMetaPdfServerConfigDto = {
   url: string;
 };
 
-export type WorkerMetaApiConfigDto = WorkerMetaPdfServerConfigDto;
+export type WorkerMetaMaterialTracingServerConfigDto = {
+  type: 'material-tracing-server',
+  url: string;
+};
+
+export type WorkerMetaProductServerConfigDto = {
+  type: 'product-server',
+  url: string;
+  catalogId: string;
+};
+
+export type WorkerMetaApiConfigDto = WorkerMetaPdfServerConfigDto | WorkerMetaMaterialTracingServerConfigDto | WorkerMetaProductServerConfigDto;
 
 export type WorkerMetaDto = {
   api: {

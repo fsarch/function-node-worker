@@ -1,5 +1,10 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { FunctionVersionDto, WorkerMetaApiConfigDto, WorkerMetaDto } from "../function-server/function-server.types.js";
+import {
+  FunctionVersionDto,
+  WorkerMetaApiConfigDto,
+  WorkerMetaDto, WorkerMetaMaterialTracingServerConfigDto,
+  WorkerMetaPdfServerConfigDto, WorkerMetaProductServerConfigDto
+} from "../function-server/function-server.types.js";
 import * as vm from "node:vm";
 import { PdfServerApi } from "./_utils/api/pdf-server/PdfServer.api.js";
 import { TApiOptions } from "./_utils/api/api.type.js";
@@ -7,6 +12,8 @@ import { ModuleConfigurationService } from "../../fsarch/configuration/module/mo
 import { ConfigWorkerAuthType } from "../../types/ConfigWorkerAuth.type.js";
 import { decodeJwt } from "jose";
 import { serializeError } from "serialize-error";
+import { MaterialTracingServerApi } from "./_utils/api/material-tracing-server/MaterialTracingServer.api.js";
+import { ProductServerApi } from "./_utils/api/product-server/ProductServer.api.js";
 
 @Injectable()
 export class FunctionExecuterService {
@@ -66,8 +73,28 @@ export class FunctionExecuterService {
         config: value,
       }
 
-      if (apiOptions.config.type === 'pdf-server') {
+      function isPdfServerConfig(config: TApiOptions): config is TApiOptions<WorkerMetaPdfServerConfigDto> {
+        return config.config.type === 'pdf-server';
+      }
+
+      function isMaterialTracingServerConfig(config: TApiOptions): config is TApiOptions<WorkerMetaMaterialTracingServerConfigDto> {
+        return config.config.type === 'material-tracing-server';
+      }
+
+      function isProductServerConfig(config: TApiOptions): config is TApiOptions<WorkerMetaProductServerConfigDto> {
+        return config.config.type === 'product-server';
+      }
+
+      if (isPdfServerConfig(apiOptions)) {
         return [key, new PdfServerApi(apiOptions)];
+      }
+
+      if (isMaterialTracingServerConfig(apiOptions)) {
+        return [key, new MaterialTracingServerApi(apiOptions)];
+      }
+
+      if (isProductServerConfig(apiOptions)) {
+        return [key, new ProductServerApi(apiOptions)];
       }
 
       return [key, value];

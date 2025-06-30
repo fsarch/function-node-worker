@@ -33,8 +33,6 @@ export class PdfServerApi {
     const accessToken = await this.apiOptions.getAccessToken();
     const url = `${this.apiOptions.config.url}/pdf/_actions/render`;
 
-    console.log('url', url);
-
     const response = await fetch(url, {
       method: 'POST',
       headers: {
