@@ -14,6 +14,7 @@ import { decodeJwt } from "jose";
 import { serializeError } from "serialize-error";
 import { MaterialTracingServerApi } from "./_utils/api/material-tracing-server/MaterialTracingServer.api.js";
 import { ProductServerApi } from "./_utils/api/product-server/ProductServer.api.js";
+import { FileReader } from "./file-reader/file-reader.js";
 
 @Injectable()
 export class FunctionExecuterService {
@@ -132,6 +133,7 @@ export class FunctionExecuterService {
       TextEncoder: TextEncoder,
       TextDecoder: TextDecoder,
       Blob,
+      FileReader,
       fsarch: fsarchApi,
     };
 
