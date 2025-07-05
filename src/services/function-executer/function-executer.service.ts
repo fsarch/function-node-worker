@@ -150,7 +150,7 @@ export class FunctionExecuterService {
     try {
       return {
         isError: false,
-        result: await moduleExports.run(args),
+        result: await moduleExports.run(...args),
       };
     } catch (error) {
       return {

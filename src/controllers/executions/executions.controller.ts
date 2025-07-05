@@ -45,7 +45,7 @@ export class ExecutionsController {
 
     const workerMeta = await this.functionServerService.getWorkerMetadata();
 
-    const promise = this.functionExecuterService.execute(functionVersion, workerMeta, body.arguments);
+    const promise = this.functionExecuterService.execute(functionVersion, workerMeta, body.arguments ?? []);
     promise.catch((error) => {
       this.logger.error('error while executing function', {
         error,
