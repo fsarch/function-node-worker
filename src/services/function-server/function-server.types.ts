@@ -24,7 +24,12 @@ export type WorkerMetaProductServerConfigDto = {
   catalogId: string;
 };
 
-export type WorkerMetaApiConfigDto = WorkerMetaPdfServerConfigDto | WorkerMetaMaterialTracingServerConfigDto | WorkerMetaProductServerConfigDto;
+export type WorkerMetaPrinterServerConfigDto = {
+  type: 'printer-server',
+  url: string;
+};
+
+export type WorkerMetaApiConfigDto = WorkerMetaPdfServerConfigDto | WorkerMetaMaterialTracingServerConfigDto | WorkerMetaProductServerConfigDto | WorkerMetaPrinterServerConfigDto;
 
 export type WorkerMetaDto = {
   api: {
