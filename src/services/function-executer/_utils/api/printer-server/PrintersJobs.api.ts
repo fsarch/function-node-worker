@@ -3,11 +3,11 @@ import {
   WorkerMetaPrinterServerConfigDto,
 } from "../../../../function-server/function-server.types.js";
 import { apiUtils } from "../api.utils.js";
-import { 
-  ReceiptDataDto, 
-  CreatePrintJobDto, 
+import {
+  ReceiptDataDto,
+  CreatePrintJobDto,
   PrintJobDto,
-  CreateReceiptJobOptions 
+  CreateReceiptJobOptions
 } from "./printer-server.types.js";
 
 export class PrintersJobsApi {
@@ -24,14 +24,17 @@ export class PrintersJobsApi {
 
   public async createReceiptJob(
     printerId: string,
-    data: ReceiptDataDto,
+    data: Array<ReceiptDataDto>,
     options: CreateReceiptJobOptions = {}
   ): Promise<PrintJobDto> {
     // Build the CreatePrintJobDto from the provided data and options
     const createPrintJobDto: CreatePrintJobDto = {
-      data: [data], // Wrap single data item in array as expected by API
-      ...(options.externalId && { externalId: options.externalId })
+      data: data,
     };
+
+    if (options?.externalId) {
+      createPrintJobDto.externalId = options.externalId;
+    }
 
     const response = await this.request({
       method: 'POST',
