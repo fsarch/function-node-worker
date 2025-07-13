@@ -23,10 +23,10 @@ export type NewlineReceiptDataDto = {
 };
 
 // Union type for all receipt data types
-export type ReceiptDataDto = 
-  | AlignmentReceiptDataDto 
-  | TextReceiptDataDto 
-  | CutReceiptDataDto 
+export type ReceiptDataDto =
+  | AlignmentReceiptDataDto
+  | TextReceiptDataDto
+  | CutReceiptDataDto
   | NewlineReceiptDataDto;
 
 // DTO for creating a print job
@@ -39,11 +39,9 @@ export type CreatePrintJobDto = {
 export type PrintJobDto = {
   id: string;
   printerId: string;
-  status: 'pending' | 'processing' | 'completed' | 'failed';
   data: ReceiptDataDto[];
   externalId?: string;
   createdAt: string;
-  updatedAt: string;
 };
 
 // Options for createReceiptJob method
