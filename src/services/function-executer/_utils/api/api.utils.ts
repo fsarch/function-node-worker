@@ -26,9 +26,12 @@ const createRequest = ({ url, getAccessToken }: { url: string; getAccessToken: (
   });
 
   if (!response.ok) {
+    let body = response.json().catch(() => {});
+
     console.error('failed to load resource', {
       url: completeUrl,
       status: response.status,
+      body,
     });
     throw new Error('failed to load resource');
   }
