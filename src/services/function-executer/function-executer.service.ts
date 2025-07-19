@@ -3,7 +3,9 @@ import {
   FunctionVersionDto,
   WorkerMetaApiConfigDto,
   WorkerMetaDto, WorkerMetaMaterialTracingServerConfigDto,
-  WorkerMetaPdfServerConfigDto, WorkerMetaProductServerConfigDto
+  WorkerMetaPdfServerConfigDto,
+  WorkerMetaPrinterServerConfigDto,
+  WorkerMetaProductServerConfigDto,
 } from "../function-server/function-server.types.js";
 import * as vm from "node:vm";
 import { PdfServerApi } from "./_utils/api/pdf-server/PdfServer.api.js";
@@ -15,6 +17,7 @@ import { serializeError } from "serialize-error";
 import { MaterialTracingServerApi } from "./_utils/api/material-tracing-server/MaterialTracingServer.api.js";
 import { ProductServerApi } from "./_utils/api/product-server/ProductServer.api.js";
 import { FileReader } from "./file-reader/file-reader.js";
+import { PrinterServerApi } from "./_utils/api/printer-server/PrinterServer.api.js";
 
 @Injectable()
 export class FunctionExecuterService {
@@ -86,6 +89,10 @@ export class FunctionExecuterService {
         return config.config.type === 'product-server';
       }
 
+      function isPrinterServerConfig(config: TApiOptions): config is TApiOptions<WorkerMetaPrinterServerConfigDto> {
+        return config.config.type === 'printer-server';
+      }
+
       if (isPdfServerConfig(apiOptions)) {
         return [key, new PdfServerApi(apiOptions)];
       }
@@ -96,6 +103,10 @@ export class FunctionExecuterService {
 
       if (isProductServerConfig(apiOptions)) {
         return [key, new ProductServerApi(apiOptions)];
+      }
+
+      if (isPrinterServerConfig(apiOptions)) {
+        return [key, new PrinterServerApi(apiOptions)];
       }
 
       return [key, value];
