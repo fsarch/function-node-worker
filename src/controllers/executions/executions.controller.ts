@@ -36,6 +36,8 @@ export class ExecutionsController {
     @Param('functionId') functionId: string,
   ) {
     const functionVersion = await this.functionServerService.getVersion(functionId);
+    const functionDetails = await this.functionServerService.getFunction(functionId);
+
     if (!functionVersion) {
       this.logger.warn('function version not found', {
         functionId,
@@ -45,7 +47,12 @@ export class ExecutionsController {
 
     const workerMeta = await this.functionServerService.getWorkerMetadata();
 
-    const promise = this.functionExecuterService.execute(functionVersion, workerMeta, body.arguments ?? []);
+    const promise = this.functionExecuterService.execute(
+      functionVersion,
+      workerMeta,
+      body.arguments ?? [],
+      functionDetails,
+    );
     promise.catch((error) => {
       this.logger.error('error while executing function', {
         error,
@@ -84,6 +91,8 @@ export class ExecutionsController {
     @Param('versionId') versionId: string,
   ) {
     const functionVersion = await this.functionServerService.getVersion(functionId, versionId);
+    const functionDetails = await this.functionServerService.getFunction(functionId);
+
     if (!functionVersion) {
       this.logger.warn('function version not found', {
         functionId,
@@ -94,7 +103,12 @@ export class ExecutionsController {
 
     const workerMeta = await this.functionServerService.getWorkerMetadata();
 
-    const promise = this.functionExecuterService.execute(functionVersion, workerMeta, body.arguments);
+    const promise = this.functionExecuterService.execute(
+      functionVersion,
+      workerMeta,
+      body.arguments,
+      functionDetails,
+    );
     promise.catch((error) => {
       this.logger.error('error while executing function', {
         error,

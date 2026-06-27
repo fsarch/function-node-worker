@@ -1,5 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import {
+  FunctionDto,
   FunctionVersionDto,
   WorkerMetaApiConfigDto,
   WorkerMetaDto, WorkerMetaMaterialTracingServerConfigDto,
@@ -20,6 +21,7 @@ import { ProductServerApi } from "./_utils/api/product-server/ProductServer.api.
 import { FileReader } from "./file-reader/file-reader.js";
 import { PrinterServerApi } from "./_utils/api/printer-server/PrinterServer.api.js";
 import { MetricServerApi } from "./_utils/api/metric-server/MetricServer.api.js";
+import { FunctionServerService } from "../function-server/function-server.service.js";
 
 @Injectable()
 export class FunctionExecuterService {
@@ -30,6 +32,7 @@ export class FunctionExecuterService {
   constructor(
     @Inject('WORKER_AUTH_CONFIG')
     private readonly functionServerConfigService: ModuleConfigurationService<ConfigWorkerAuthType>,
+    private readonly functionServerService: FunctionServerService,
   ) {
     this.getAccessToken = this.getAccessToken.bind(this);
   }
@@ -128,13 +131,30 @@ export class FunctionExecuterService {
     return Object.fromEntries(entries);
   }
 
-  public async execute(functionVersion: FunctionVersionDto, workerMeta: WorkerMetaDto, args: Array<unknown>) {
+  public async execute(
+    functionVersion: FunctionVersionDto,
+    workerMeta: WorkerMetaDto,
+    args: Array<unknown>,
+    functionDetails?: FunctionDto,
+  ) {
     const { functionId, code } = functionVersion;
+    const enableDebugLogging = functionDetails?.enableDebugLogging ?? false;
+    const enableErrorLogging = functionDetails?.enableErrorLogging ?? true;
+
+    const executionLogs: Array<{ level: string; message: string; data?: unknown }> = [];
+
+    const captureLog = (level: string, message: string, data?: unknown) => {
+      executionLogs.push({ level, message, data });
+    };
 
     const createLoggerFunction = (type: keyof typeof console) => {
-      return (...args) => {
+      return (...logArgs: Array<unknown>) => {
+        const message = logArgs.map(arg => 
+          typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
+        ).join(' ');
+        captureLog(type, message, logArgs.length > 0 ? logArgs[0] : undefined);
         this.logger.log('log from function', {
-          logData: args,
+          logData: logArgs,
           method: type,
           functionId,
         });
@@ -152,8 +172,8 @@ export class FunctionExecuterService {
         warn: createLoggerFunction('warn'),
         error: createLoggerFunction('error'),
       },
-      btoa: (value) => Buffer.from(value, 'utf-8').toString('base64'),
-      atob: (value) => Buffer.from(value, 'base64').toString('utf-8'),
+      btoa: (value: string) => Buffer.from(value, 'utf-8').toString('base64'),
+      atob: (value: string) => Buffer.from(value, 'base64').toString('utf-8'),
       TextEncoder: TextEncoder,
       TextDecoder: TextDecoder,
       Blob,
@@ -172,14 +192,42 @@ export class FunctionExecuterService {
     const moduleExports = (module.namespace as { run: (...args: Array<unknown>) => Promise<unknown> });
 
     try {
+      const result = await moduleExports.run(...args);
+
+      if (enableDebugLogging) {
+        await this.functionServerService.createExecution(
+          functionId,
+          functionVersion.id,
+          true,
+          result,
+          null,
+          executionLogs.map(log => log.message),
+          args,
+        );
+      }
+
       return {
         isError: false,
-        result: await moduleExports.run(...args),
+        result,
       };
     } catch (error) {
+      const serializedError = serializeError(error);
+
+      if (enableErrorLogging || enableDebugLogging) {
+        await this.functionServerService.createExecution(
+          functionId,
+          functionVersion.id,
+          false,
+          null,
+          serializedError,
+          executionLogs.map(log => log.message),
+          args,
+        );
+      }
+
       return {
         isError: true,
-        error: serializeError(error),
+        error: serializedError,
       };
     }
   }

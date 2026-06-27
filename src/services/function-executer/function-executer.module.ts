@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { FunctionExecuterService } from './function-executer.service.js';
 import { ModuleConfiguration } from "../../fsarch/configuration/module/module-configuration.module.js";
+import { FunctionServerModule } from "../function-server/function-server.module.js";
 import Joi from "joi";
 
 @Module({
@@ -18,6 +19,7 @@ import Joi from "joi";
       ),
       name: 'worker_auth',
     }),
+    FunctionServerModule,
   ],
 })
 export class FunctionExecuterModule {}

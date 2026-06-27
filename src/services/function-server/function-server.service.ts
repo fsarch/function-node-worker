@@ -2,7 +2,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ModuleConfigurationService } from "../../fsarch/configuration/module/module-configuration.service.js";
 import { ConfigFunctionServerType } from "../../types/ConfigFunctionServerType.type.js";
 import { decodeJwt } from "jose";
-import { FunctionVersionDto, WorkerMetaDto } from "./function-server.types.js";
+import { FunctionDto, FunctionVersionDto, WorkerMetaDto } from "./function-server.types.js";
 
 @Injectable()
 export class FunctionServerService {
@@ -79,6 +79,32 @@ export class FunctionServerService {
     return responseBody;
   }
 
+  public async getFunction(functionId: string): Promise<FunctionDto> {
+    const accessToken = await this.getAccessToken();
+
+    const { url } = this.functionServerConfigService.get();
+
+    const response = await fetch(`${url}/v1/functions/${functionId}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      this.logger.error('could not get function', {
+        statusCode: response.status,
+        statusText: response.statusText,
+        functionId,
+      });
+      throw new Error(`could not get function: ${response.status} ${response.statusText}`);
+    }
+
+    const responseBody = await response.json();
+
+    return responseBody;
+  }
+
   public async getVersion(functionId: string, versionId: string = 'active'): Promise<FunctionVersionDto> {
     const accessToken = await this.getAccessToken();
 
@@ -97,5 +123,53 @@ export class FunctionServerService {
     const responseBody = await response.json();
 
     return responseBody;
+  }
+
+  public async createExecution(
+    functionId: string,
+    functionVersionId: string,
+    isSuccess: boolean,
+    result: unknown,
+    error: unknown,
+    logs: Array<string>,
+    args: Array<unknown>,
+  ): Promise<void> {
+    try {
+      const accessToken = await this.getAccessToken();
+      const { url } = this.functionServerConfigService.get();
+
+      // Convert args array to object for the API
+      const argumentsObj = args.length > 0 ? Object.assign({}, args) : null;
+
+      const response = await fetch(`${url}/v1/executions`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          functionId,
+          isSuccess,
+          arguments: argumentsObj,
+          response: isSuccess ? result : null,
+          logs,
+        }),
+      });
+
+      if (!response.ok) {
+        this.logger.error('could not send execution to function server', {
+          statusCode: response.status,
+          statusText: response.statusText,
+          functionId,
+          functionVersionId,
+        });
+      }
+    } catch (sendError) {
+      this.logger.error('error sending execution to function server', {
+        error: sendError,
+        functionId,
+        functionVersionId,
+      });
+    }
   }
 }

@@ -1,3 +1,13 @@
+export type FunctionDto = {
+  id: string;
+  name: string;
+  externalId: string;
+  enableDebugLogging: boolean;
+  enableErrorLogging: boolean;
+  retentionTimeSeconds: number;
+  creationTime: string;
+};
+
 export type FunctionVersionDto = {
   id: string;
   functionId: string;
