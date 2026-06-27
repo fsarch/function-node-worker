@@ -1,12 +1,11 @@
 # Base
-FROM node:20.10.0-bullseye-slim AS base
+FROM node:24.14.1-trixie-slim AS base
 
 ENV PORT 8080
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-
 
 # Production Deps
 FROM base AS deps
@@ -19,7 +18,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 RUN npm ci --fetch-timeout=300000
 
-
 # Build Dockerfile
 FROM base AS builder
 
@@ -31,7 +29,6 @@ RUN npm ci --fetch-timeout=300000
 
 COPY . ./
 RUN npm run build
-
 
 # Main Dockerfile
 FROM base
