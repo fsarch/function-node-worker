@@ -73,6 +73,9 @@ export class FunctionExecuterService {
   }
 
   private async createApi(workerMeta: WorkerMetaDto): Promise<Record<string, unknown>> {
+    if (!workerMeta?.api) {
+      return {};
+    }
     const entries = (Object.entries(workerMeta.api) as unknown as Array<[string, WorkerMetaApiConfigDto]>).map(([key, value]) => {
       const apiOptions: TApiOptions = {
         getAccessToken: this.getAccessToken,

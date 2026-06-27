@@ -66,6 +66,14 @@ export class FunctionServerService {
       },
     });
 
+    if (!response.ok) {
+      this.logger.error('could not get worker metadata', {
+        statusCode: response.status,
+        statusText: response.statusText,
+      });
+      throw new Error(`could not get worker metadata: ${response.status} ${response.statusText}`);
+    }
+
     const responseBody = await response.json();
 
     return responseBody;
