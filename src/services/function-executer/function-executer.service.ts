@@ -3,6 +3,7 @@ import {
   FunctionVersionDto,
   WorkerMetaApiConfigDto,
   WorkerMetaDto, WorkerMetaMaterialTracingServerConfigDto,
+  WorkerMetaMetricServerConfigDto,
   WorkerMetaPdfServerConfigDto,
   WorkerMetaPrinterServerConfigDto,
   WorkerMetaProductServerConfigDto,
@@ -18,6 +19,7 @@ import { MaterialTracingServerApi } from "./_utils/api/material-tracing-server/M
 import { ProductServerApi } from "./_utils/api/product-server/ProductServer.api.js";
 import { FileReader } from "./file-reader/file-reader.js";
 import { PrinterServerApi } from "./_utils/api/printer-server/PrinterServer.api.js";
+import { MetricServerApi } from "./_utils/api/metric-server/MetricServer.api.js";
 
 @Injectable()
 export class FunctionExecuterService {
@@ -93,6 +95,10 @@ export class FunctionExecuterService {
         return config.config.type === 'printer-server';
       }
 
+      function isMetricServerConfig(config: TApiOptions): config is TApiOptions<WorkerMetaMetricServerConfigDto> {
+        return config.config.type === 'metric-server';
+      }
+
       if (isPdfServerConfig(apiOptions)) {
         return [key, new PdfServerApi(apiOptions)];
       }
@@ -107,6 +113,10 @@ export class FunctionExecuterService {
 
       if (isPrinterServerConfig(apiOptions)) {
         return [key, new PrinterServerApi(apiOptions)];
+      }
+
+      if (isMetricServerConfig(apiOptions)) {
+        return [key, new MetricServerApi(apiOptions)];
       }
 
       return [key, value];

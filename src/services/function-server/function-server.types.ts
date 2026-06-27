@@ -29,7 +29,12 @@ export type WorkerMetaPrinterServerConfigDto = {
   url: string;
 };
 
-export type WorkerMetaApiConfigDto = WorkerMetaPdfServerConfigDto | WorkerMetaMaterialTracingServerConfigDto | WorkerMetaProductServerConfigDto | WorkerMetaPrinterServerConfigDto;
+export type WorkerMetaMetricServerConfigDto = {
+  type: 'metric-server',
+  url: string;
+};
+
+export type WorkerMetaApiConfigDto = WorkerMetaPdfServerConfigDto | WorkerMetaMaterialTracingServerConfigDto | WorkerMetaProductServerConfigDto | WorkerMetaPrinterServerConfigDto | WorkerMetaMetricServerConfigDto;
 
 export type WorkerMetaDto = {
   api: {
