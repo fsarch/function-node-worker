@@ -84,7 +84,8 @@ export class FunctionServerService {
 
     const { url } = this.functionServerConfigService.get();
 
-    const response = await fetch(`${url}/v1/functions/${functionId}`, {
+    const requestUrl = `${url}/v1/functions/${functionId}`;
+    const response = await fetch(requestUrl, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -93,6 +94,7 @@ export class FunctionServerService {
 
     if (!response.ok) {
       this.logger.error('could not get function', {
+        requestUrl,
         statusCode: response.status,
         statusText: response.statusText,
         functionId,
@@ -131,7 +133,7 @@ export class FunctionServerService {
     isSuccess: boolean,
     result: unknown,
     error: unknown,
-    logs: Array<string>,
+    logs: Array<{ message: string }>,
     args: Array<unknown>,
   ): Promise<void> {
     try {

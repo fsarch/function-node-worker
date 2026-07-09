@@ -149,7 +149,7 @@ export class FunctionExecuterService {
 
     const createLoggerFunction = (type: keyof typeof console) => {
       return (...logArgs: Array<unknown>) => {
-        const message = logArgs.map(arg => 
+        const message = logArgs.map(arg =>
           typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
         ).join(' ');
         captureLog(type, message, logArgs.length > 0 ? logArgs[0] : undefined);
@@ -201,7 +201,7 @@ export class FunctionExecuterService {
           true,
           result,
           null,
-          executionLogs.map(log => log.message),
+          executionLogs,
           args,
         );
       }
@@ -220,7 +220,7 @@ export class FunctionExecuterService {
           false,
           null,
           serializedError,
-          executionLogs.map(log => log.message),
+          executionLogs,
           args,
         );
       }
