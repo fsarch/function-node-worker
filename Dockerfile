@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
+
 # Production Deps
 FROM base AS deps
 
@@ -17,6 +18,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 RUN npm ci --fetch-timeout=300000
+
 
 # Build Dockerfile
 FROM base AS builder
@@ -30,10 +32,12 @@ RUN npm ci --fetch-timeout=300000
 COPY . ./
 RUN npm run build
 
+
 # Main Dockerfile
 FROM base
 
 ENV NODE_ENV production
+ENV PORT 8080
 
 EXPOSE 8080
 
@@ -43,4 +47,3 @@ COPY --from=deps --chown=node:node /usr/src/app/node_modules ./node_modules
 USER node
 
 CMD ["node", "--experimental-vm-modules", "./dist/main.js"]
-
