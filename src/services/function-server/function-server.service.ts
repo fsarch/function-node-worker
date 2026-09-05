@@ -140,9 +140,6 @@ export class FunctionServerService {
       const accessToken = await this.getAccessToken();
       const { url } = this.functionServerConfigService.get();
 
-      // Convert args array to object for the API
-      const argumentsObj = args.length > 0 ? Object.assign({}, args) : null;
-
       const response = await fetch(`${url}/v1/executions`, {
         method: 'POST',
         headers: {
@@ -151,8 +148,9 @@ export class FunctionServerService {
         },
         body: JSON.stringify({
           functionId,
+          functionVersionId,
           isSuccess,
-          arguments: argumentsObj,
+          arguments: args.length > 0 ? args : null,
           response: isSuccess ? result : null,
           logs,
         }),
