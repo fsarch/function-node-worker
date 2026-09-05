@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ModuleConfigurationService } from "../../fsarch/configuration/module/module-configuration.service.js";
+import { ModuleConfigurationService } from "@fsarch/server/configuration";
 import { ConfigFunctionServerType } from "../../types/ConfigFunctionServerType.type.js";
 import { decodeJwt } from "jose";
 import { FunctionDto, FunctionVersionDto, WorkerMetaDto } from "./function-server.types.js";

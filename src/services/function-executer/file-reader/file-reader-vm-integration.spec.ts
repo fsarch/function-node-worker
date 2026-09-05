@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 import { FileReader } from './file-reader';
 import * as vm from 'node:vm';
 

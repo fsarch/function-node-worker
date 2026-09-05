@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { FunctionExecuterService } from './function-executer.service.js';
-import { ModuleConfiguration } from "../../fsarch/configuration/module/module-configuration.module.js";
+import { ModuleConfiguration } from "@fsarch/server/configuration";
 import { FunctionServerModule } from "../function-server/function-server.module.js";
 import Joi from "joi";
 
