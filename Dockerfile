@@ -38,6 +38,11 @@ FROM base
 
 ENV NODE_ENV production
 ENV PORT 8080
+# Preload OpenTelemetry auto-instrumentation before the app's own module
+# graph loads (required for tracing to pick up http/express/pg/nest spans;
+# see @fsarch/server/register). No-op unless tracing.enabled: true is set
+# in config.yml.
+ENV NODE_OPTIONS="--import @fsarch/server/register"
 
 EXPOSE 8080
 
