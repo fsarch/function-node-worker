@@ -29,13 +29,23 @@ export class FunctionServerService {
       client_secret: auth.client_secret,
     });
 
-    const response = await fetch(auth.token_endpoint, {
-      method: 'POST',
-      body: requestBody,
-    });
+    let response: Response;
+    try {
+      response = await fetch(auth.token_endpoint, {
+        method: 'POST',
+        body: requestBody,
+      });
+    } catch (error) {
+      this.logger.error('request to get access-token failed', {
+        requestUrl: auth.token_endpoint,
+        error,
+      });
+      throw error;
+    }
 
     if (!response.ok) {
       this.logger.error('could not get access-token', {
+        requestUrl: auth.token_endpoint,
         statusCode: response.status,
       });
       throw new Error('could not get access-token');
@@ -59,15 +69,26 @@ export class FunctionServerService {
 
     const { url } = this.functionServerConfigService.get();
 
-    const response = await fetch(`${url}/v1/.meta/worker`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const requestUrl = `${url}/v1/.meta/worker`;
+    let response: Response;
+    try {
+      response = await fetch(requestUrl, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    } catch (error) {
+      this.logger.error('request to get worker metadata failed', {
+        requestUrl,
+        error,
+      });
+      throw error;
+    }
 
     if (!response.ok) {
       this.logger.error('could not get worker metadata', {
+        requestUrl,
         statusCode: response.status,
         statusText: response.statusText,
       });
@@ -85,12 +106,22 @@ export class FunctionServerService {
     const { url } = this.functionServerConfigService.get();
 
     const requestUrl = `${url}/v1/functions/${functionId}`;
-    const response = await fetch(requestUrl, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    let response: Response;
+    try {
+      response = await fetch(requestUrl, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    } catch (error) {
+      this.logger.error('request to get function failed', {
+        requestUrl,
+        functionId,
+        error,
+      });
+      throw error;
+    }
 
     if (!response.ok) {
       this.logger.error('could not get function', {
@@ -112,14 +143,34 @@ export class FunctionServerService {
 
     const { url } = this.functionServerConfigService.get();
 
-    const response = await fetch(`${url}/v1/functions/${functionId}/versions/${versionId}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    if (!response) {
-      throw new Error('could not get function version');
+    const requestUrl = `${url}/v1/functions/${functionId}/versions/${versionId}`;
+    let response: Response;
+    try {
+      response = await fetch(requestUrl, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+    } catch (error) {
+      this.logger.error('request to get function version failed', {
+        requestUrl,
+        functionId,
+        versionId,
+        error,
+      });
+      throw error;
+    }
+
+    if (!response.ok) {
+      this.logger.error('could not get function version', {
+        requestUrl,
+        statusCode: response.status,
+        statusText: response.statusText,
+        functionId,
+        versionId,
+      });
+      throw new Error(`could not get function version: ${response.status} ${response.statusText}`);
     }
 
     const responseBody = await response.json();

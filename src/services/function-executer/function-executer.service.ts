@@ -50,13 +50,23 @@ export class FunctionExecuterService {
       client_secret: auth.client_secret,
     });
 
-    const response = await fetch(auth.token_endpoint, {
-      method: 'POST',
-      body: requestBody,
-    });
+    let response: Response;
+    try {
+      response = await fetch(auth.token_endpoint, {
+        method: 'POST',
+        body: requestBody,
+      });
+    } catch (error) {
+      this.logger.error('request to get access-token failed', {
+        requestUrl: auth.token_endpoint,
+        error,
+      });
+      throw error;
+    }
 
     if (!response.ok) {
       this.logger.error('could not get access-token', {
+        requestUrl: auth.token_endpoint,
         statusCode: response.status,
       });
       throw new Error('could not get access-token');

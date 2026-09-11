@@ -16,14 +16,24 @@ const createRequest = ({ url, getAccessToken }: { url: string; getAccessToken: (
   const queryParams = new URLSearchParams(queryParamsArray);
   const completeUrl = `${url}${options.path}?${queryParams.toString()}`;
 
-  const response = await fetch(completeUrl, {
-    method: options.method,
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': options.body !== undefined ? 'application/json' : undefined,
-    },
-    body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
-  });
+  let response: Response;
+  try {
+    response = await fetch(completeUrl, {
+      method: options.method,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': options.body !== undefined ? 'application/json' : undefined,
+      },
+      body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+    });
+  } catch (error) {
+    console.error('request to external service failed', {
+      url: completeUrl,
+      method: options.method,
+      error,
+    });
+    throw error;
+  }
 
   if (!response.ok) {
     let body = await response.json().catch(() => {});
