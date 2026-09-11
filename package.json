@@ -1,6 +1,6 @@
 {
   "name": "function-node-worker",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "index.js",
   "private": true,
   "type": "module",
