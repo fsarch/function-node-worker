@@ -12,12 +12,12 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "incremental": true,
-    "types": ["node", "jest"],
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  "include": ["src/**/*.ts"]
 }

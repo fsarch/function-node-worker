@@ -1,14 +1,12 @@
-import { TApiOptions, TRequestFnc } from "../api.type.js";
+import { WorkerMetaPrinterServerConfigDto } from '../../../../function-server/function-server.types.js';
+import { TApiOptions, TRequestFnc } from '../api.type.js';
+import { apiUtils } from '../api.utils.js';
 import {
-  WorkerMetaPrinterServerConfigDto,
-} from "../../../../function-server/function-server.types.js";
-import { apiUtils } from "../api.utils.js";
-import {
-  ReceiptDataDto,
   CreatePrintJobDto,
+  CreateReceiptJobOptions,
   PrintJobDto,
-  CreateReceiptJobOptions
-} from "./printer-server.types.js";
+  ReceiptDataDto,
+} from './printer-server.types.js';
 
 export class PrintersJobsApi {
   private readonly request: TRequestFnc;
@@ -25,7 +23,7 @@ export class PrintersJobsApi {
   public async createReceiptJob(
     printerId: string,
     data: Array<ReceiptDataDto>,
-    options: CreateReceiptJobOptions = {}
+    options: CreateReceiptJobOptions = {},
   ): Promise<PrintJobDto> {
     // Build the CreatePrintJobDto from the provided data and options
     const createPrintJobDto: CreatePrintJobDto = {

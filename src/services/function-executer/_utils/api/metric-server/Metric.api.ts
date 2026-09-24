@@ -1,6 +1,6 @@
-import { TApiOptions } from "../api.type.js";
-import { WorkerMetaMetricServerConfigDto } from "../../../../function-server/function-server.types.js";
-import { apiUtils } from "../api.utils.js";
+import { WorkerMetaMetricServerConfigDto } from '../../../../function-server/function-server.types.js';
+import { TApiOptions } from '../api.type.js';
+import { apiUtils } from '../api.utils.js';
 
 export type CreateMetricDto = {
   name: string;

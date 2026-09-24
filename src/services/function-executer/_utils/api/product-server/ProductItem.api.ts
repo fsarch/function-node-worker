@@ -1,8 +1,6 @@
-import { TApiOptions, TRequestFnc } from "../api.type.js";
-import {
-  WorkerMetaProductServerConfigDto,
-} from "../../../../function-server/function-server.types.js";
-import { apiUtils } from "../api.utils.js";
+import { WorkerMetaProductServerConfigDto } from '../../../../function-server/function-server.types.js';
+import { TApiOptions, TRequestFnc } from '../api.type.js';
+import { apiUtils } from '../api.utils.js';
 
 export class ProductItemApi {
   private readonly request: TRequestFnc;

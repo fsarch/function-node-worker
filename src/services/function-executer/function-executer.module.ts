@@ -1,8 +1,8 @@
+import { ModuleConfiguration } from '@fsarch/server/configuration';
 import { Module } from '@nestjs/common';
+import Joi from 'joi';
+import { FunctionServerModule } from '../function-server/function-server.module.js';
 import { FunctionExecuterService } from './function-executer.service.js';
-import { ModuleConfiguration } from "@fsarch/server/configuration";
-import { FunctionServerModule } from "../function-server/function-server.module.js";
-import Joi from "joi";
 
 @Module({
   providers: [FunctionExecuterService],
@@ -15,7 +15,7 @@ import Joi from "joi";
           token_endpoint: Joi.string().required(),
           client_id: Joi.string().required(),
           client_secret: Joi.string().required(),
-        })
+        }),
       ),
       name: 'worker_auth',
     }),

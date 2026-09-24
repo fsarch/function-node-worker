@@ -1,9 +1,17 @@
-import { Body, Controller, Logger, NotFoundException, Param, Post, Query } from '@nestjs/common';
-import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from "@nestjs/swagger";
-import { RunExecutionDto } from "../../models/RunExecution.model.js";
-import { FunctionServerService } from "../../services/function-server/function-server.service.js";
-import { FunctionExecuterService } from "../../services/function-executer/function-executer.service.js";
-import { FunctionExecuteQueryParams } from "../../services/function-executer/function-executer.model.js";
+import {
+  Body,
+  Controller,
+  Logger,
+  NotFoundException,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { RunExecutionDto } from '../../models/RunExecution.model.js';
+import { FunctionExecuteQueryParams } from '../../services/function-executer/function-executer.model.js';
+import { FunctionExecuterService } from '../../services/function-executer/function-executer.service.js';
+import { FunctionServerService } from '../../services/function-server/function-server.service.js';
 
 @ApiTags('executions')
 @Controller({
@@ -17,8 +25,7 @@ export class ExecutionsController {
   constructor(
     private readonly functionServerService: FunctionServerService,
     private readonly functionExecuterService: FunctionExecuterService,
-  ) {
-  }
+  ) {}
 
   @Post('executions')
   @ApiQuery({
@@ -35,8 +42,10 @@ export class ExecutionsController {
     @Query() query: FunctionExecuteQueryParams,
     @Param('functionId') functionId: string,
   ) {
-    const functionVersion = await this.functionServerService.getVersion(functionId);
-    const functionDetails = await this.functionServerService.getFunction(functionId);
+    const functionVersion =
+      await this.functionServerService.getVersion(functionId);
+    const functionDetails =
+      await this.functionServerService.getFunction(functionId);
 
     if (!functionVersion) {
       this.logger.warn('function version not found', {
@@ -90,8 +99,12 @@ export class ExecutionsController {
     @Param('functionId') functionId: string,
     @Param('versionId') versionId: string,
   ) {
-    const functionVersion = await this.functionServerService.getVersion(functionId, versionId);
-    const functionDetails = await this.functionServerService.getFunction(functionId);
+    const functionVersion = await this.functionServerService.getVersion(
+      functionId,
+      versionId,
+    );
+    const functionDetails =
+      await this.functionServerService.getFunction(functionId);
 
     if (!functionVersion) {
       this.logger.warn('function version not found', {

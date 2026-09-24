@@ -1,9 +1,7 @@
-import { TApiOptions } from "../api.type.js";
-import {
-  WorkerMetaProductServerConfigDto,
-} from "../../../../function-server/function-server.types.js";
-import { ProductItemApi } from "./ProductItem.api.js";
-import { ProductAttributeApi } from "./ProductAttribute.api.js";
+import { WorkerMetaProductServerConfigDto } from '../../../../function-server/function-server.types.js';
+import { TApiOptions } from '../api.type.js';
+import { ProductAttributeApi } from './ProductAttribute.api.js';
+import { ProductItemApi } from './ProductItem.api.js';
 
 export class ProductServerApi {
   public readonly items: ProductItemApi;

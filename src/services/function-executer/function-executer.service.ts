@@ -1,33 +1,36 @@
+import * as vm from 'node:vm';
+import { ModuleConfigurationService } from '@fsarch/server/configuration';
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { decodeJwt } from 'jose';
+import { serializeError } from 'serialize-error';
+import { ConfigWorkerAuthType } from '../../types/ConfigWorkerAuth.type.js';
+import { FunctionServerService } from '../function-server/function-server.service.js';
 import {
   FunctionDto,
   FunctionVersionDto,
   WorkerMetaApiConfigDto,
-  WorkerMetaDto, WorkerMetaMaterialTracingServerConfigDto,
+  WorkerMetaDto,
+  WorkerMetaMaterialTracingServerConfigDto,
   WorkerMetaMetricServerConfigDto,
   WorkerMetaPdfServerConfigDto,
   WorkerMetaPrinterServerConfigDto,
   WorkerMetaProductServerConfigDto,
-} from "../function-server/function-server.types.js";
-import * as vm from "node:vm";
-import { PdfServerApi } from "./_utils/api/pdf-server/PdfServer.api.js";
-import { TApiOptions } from "./_utils/api/api.type.js";
-import { ModuleConfigurationService } from "@fsarch/server/configuration";
-import { ConfigWorkerAuthType } from "../../types/ConfigWorkerAuth.type.js";
-import { decodeJwt } from "jose";
-import { serializeError } from "serialize-error";
-import { MaterialTracingServerApi } from "./_utils/api/material-tracing-server/MaterialTracingServer.api.js";
-import { ProductServerApi } from "./_utils/api/product-server/ProductServer.api.js";
-import { FileReader } from "./file-reader/file-reader.js";
-import { PrinterServerApi } from "./_utils/api/printer-server/PrinterServer.api.js";
-import { MetricServerApi } from "./_utils/api/metric-server/MetricServer.api.js";
-import { FunctionServerService } from "../function-server/function-server.service.js";
+} from '../function-server/function-server.types.js';
+import { TApiOptions } from './_utils/api/api.type.js';
+import { MaterialTracingServerApi } from './_utils/api/material-tracing-server/MaterialTracingServer.api.js';
+import { MetricServerApi } from './_utils/api/metric-server/MetricServer.api.js';
+import { PdfServerApi } from './_utils/api/pdf-server/PdfServer.api.js';
+import { PrinterServerApi } from './_utils/api/printer-server/PrinterServer.api.js';
+import { ProductServerApi } from './_utils/api/product-server/ProductServer.api.js';
+import { FileReader } from './file-reader/file-reader.js';
 
 @Injectable()
 export class FunctionExecuterService {
   private readonly logger = new Logger(FunctionExecuterService.name);
 
-  private accessTokenCache: { accessToken: string; expirationTime: number } | undefined = undefined;
+  private accessTokenCache:
+    | { accessToken: string; expirationTime: number }
+    | undefined = undefined;
 
   constructor(
     @Inject('WORKER_AUTH_CONFIG')
@@ -38,7 +41,10 @@ export class FunctionExecuterService {
   }
 
   private async getAccessToken() {
-    if (this.accessTokenCache && this.accessTokenCache.expirationTime > (Date.now() - (60 * 1000))) {
+    if (
+      this.accessTokenCache &&
+      this.accessTokenCache.expirationTime > Date.now() - 60 * 1000
+    ) {
       return this.accessTokenCache.accessToken;
     }
 
@@ -80,38 +86,54 @@ export class FunctionExecuterService {
     this.accessTokenCache = {
       expirationTime: new Date(claims.exp * 1000).getTime(),
       accessToken,
-    }
+    };
 
     return accessToken;
   }
 
-  private async createApi(workerMeta: WorkerMetaDto): Promise<Record<string, unknown>> {
+  private async createApi(
+    workerMeta: WorkerMetaDto,
+  ): Promise<Record<string, unknown>> {
     if (!workerMeta?.api) {
       return {};
     }
-    const entries = (Object.entries(workerMeta.api) as unknown as Array<[string, WorkerMetaApiConfigDto]>).map(([key, value]) => {
+    const entries = (
+      Object.entries(workerMeta.api) as unknown as Array<
+        [string, WorkerMetaApiConfigDto]
+      >
+    ).map(([key, value]) => {
       const apiOptions: TApiOptions = {
         getAccessToken: this.getAccessToken,
         config: value,
-      }
+      };
 
-      function isPdfServerConfig(config: TApiOptions): config is TApiOptions<WorkerMetaPdfServerConfigDto> {
+      function isPdfServerConfig(
+        config: TApiOptions,
+      ): config is TApiOptions<WorkerMetaPdfServerConfigDto> {
         return config.config.type === 'pdf-server';
       }
 
-      function isMaterialTracingServerConfig(config: TApiOptions): config is TApiOptions<WorkerMetaMaterialTracingServerConfigDto> {
+      function isMaterialTracingServerConfig(
+        config: TApiOptions,
+      ): config is TApiOptions<WorkerMetaMaterialTracingServerConfigDto> {
         return config.config.type === 'material-tracing-server';
       }
 
-      function isProductServerConfig(config: TApiOptions): config is TApiOptions<WorkerMetaProductServerConfigDto> {
+      function isProductServerConfig(
+        config: TApiOptions,
+      ): config is TApiOptions<WorkerMetaProductServerConfigDto> {
         return config.config.type === 'product-server';
       }
 
-      function isPrinterServerConfig(config: TApiOptions): config is TApiOptions<WorkerMetaPrinterServerConfigDto> {
+      function isPrinterServerConfig(
+        config: TApiOptions,
+      ): config is TApiOptions<WorkerMetaPrinterServerConfigDto> {
         return config.config.type === 'printer-server';
       }
 
-      function isMetricServerConfig(config: TApiOptions): config is TApiOptions<WorkerMetaMetricServerConfigDto> {
+      function isMetricServerConfig(
+        config: TApiOptions,
+      ): config is TApiOptions<WorkerMetaMetricServerConfigDto> {
         return config.config.type === 'metric-server';
       }
 
@@ -151,7 +173,11 @@ export class FunctionExecuterService {
     const enableDebugLogging = functionDetails?.enableDebugLogging ?? false;
     const enableErrorLogging = functionDetails?.enableErrorLogging ?? true;
 
-    const executionLogs: Array<{ level: string; message: string; data?: unknown }> = [];
+    const executionLogs: Array<{
+      level: string;
+      message: string;
+      data?: unknown;
+    }> = [];
 
     const captureLog = (level: string, message: string, data?: unknown) => {
       executionLogs.push({ level, message, data });
@@ -159,9 +185,11 @@ export class FunctionExecuterService {
 
     const createLoggerFunction = (type: keyof typeof console) => {
       return (...logArgs: Array<unknown>) => {
-        const message = logArgs.map(arg =>
-          typeof arg === 'object' ? JSON.stringify(arg) : String(arg)
-        ).join(' ');
+        const message = logArgs
+          .map((arg) =>
+            typeof arg === 'object' ? JSON.stringify(arg) : String(arg),
+          )
+          .join(' ');
         captureLog(type, message, logArgs.length > 0 ? logArgs[0] : undefined);
         this.logger.log('log from function', {
           logData: logArgs,
@@ -199,7 +227,9 @@ export class FunctionExecuterService {
       throw new Error('could not find module code');
     });
 
-    const moduleExports = (module.namespace as { run: (...args: Array<unknown>) => Promise<unknown> });
+    const moduleExports = module.namespace as {
+      run: (...args: Array<unknown>) => Promise<unknown>;
+    };
 
     try {
       const result = await moduleExports.run(...args);

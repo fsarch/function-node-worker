@@ -1,14 +1,20 @@
+import { ModuleConfigurationService } from '@fsarch/server/configuration';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { ModuleConfigurationService } from "@fsarch/server/configuration";
-import { ConfigFunctionServerType } from "../../types/ConfigFunctionServerType.type.js";
-import { decodeJwt } from "jose";
-import { FunctionDto, FunctionVersionDto, WorkerMetaDto } from "./function-server.types.js";
+import { decodeJwt } from 'jose';
+import { ConfigFunctionServerType } from '../../types/ConfigFunctionServerType.type.js';
+import {
+  FunctionDto,
+  FunctionVersionDto,
+  WorkerMetaDto,
+} from './function-server.types.js';
 
 @Injectable()
 export class FunctionServerService {
   private readonly logger = new Logger(FunctionServerService.name);
 
-  private accessTokenCache: { accessToken: string; expirationTime: number } | undefined = undefined;
+  private accessTokenCache:
+    | { accessToken: string; expirationTime: number }
+    | undefined = undefined;
 
   constructor(
     @Inject('FUNCTION_SERVER_CONFIG')
@@ -16,8 +22,16 @@ export class FunctionServerService {
   ) {}
 
   public async getAccessToken() {
-    if (this.accessTokenCache && this.accessTokenCache.expirationTime > (Date.now() - (60 * 1000))) {
-      console.log('reuse accessToken', this.accessTokenCache, (Date.now() - (60 * 1000)));
+    if (
+      this.accessTokenCache &&
+      this.accessTokenCache.expirationTime > Date.now() - 60 * 1000
+    ) {
+      this.logger.debug('reuse access-token', {
+        accessTokenPayload: this.accessTokenCache.accessToken?.split('.')?.[1],
+        expirationTimestamp: this.accessTokenCache.expirationTime,
+        currentTimestamp: Date.now(),
+        offsetTimestamp: Date.now() - 60 * 1000,
+      });
       return this.accessTokenCache.accessToken;
     }
 
@@ -59,7 +73,7 @@ export class FunctionServerService {
     this.accessTokenCache = {
       expirationTime: new Date(claims.exp * 1000).getTime(),
       accessToken,
-    }
+    };
 
     return accessToken;
   }
@@ -92,7 +106,9 @@ export class FunctionServerService {
         statusCode: response.status,
         statusText: response.statusText,
       });
-      throw new Error(`could not get worker metadata: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `could not get worker metadata: ${response.status} ${response.statusText}`,
+      );
     }
 
     const responseBody = await response.json();
@@ -130,7 +146,9 @@ export class FunctionServerService {
         statusText: response.statusText,
         functionId,
       });
-      throw new Error(`could not get function: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `could not get function: ${response.status} ${response.statusText}`,
+      );
     }
 
     const responseBody = await response.json();
@@ -138,7 +156,10 @@ export class FunctionServerService {
     return responseBody;
   }
 
-  public async getVersion(functionId: string, versionId: string = 'active'): Promise<FunctionVersionDto> {
+  public async getVersion(
+    functionId: string,
+    versionId: string = 'active',
+  ): Promise<FunctionVersionDto> {
     const accessToken = await this.getAccessToken();
 
     const { url } = this.functionServerConfigService.get();
@@ -170,7 +191,9 @@ export class FunctionServerService {
         functionId,
         versionId,
       });
-      throw new Error(`could not get function version: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `could not get function version: ${response.status} ${response.statusText}`,
+      );
     }
 
     const responseBody = await response.json();

@@ -1,8 +1,6 @@
-import { TApiOptions, TRequestFnc } from "../api.type.js";
-import {
-  WorkerMetaProductServerConfigDto,
-} from "../../../../function-server/function-server.types.js";
-import { apiUtils } from "../api.utils.js";
+import { WorkerMetaProductServerConfigDto } from '../../../../function-server/function-server.types.js';
+import { TApiOptions, TRequestFnc } from '../api.type.js';
+import { apiUtils } from '../api.utils.js';
 
 export class ProductAttributeElementApi {
   private readonly request: TRequestFnc;
@@ -16,11 +14,14 @@ export class ProductAttributeElementApi {
     });
   }
 
-  public async listByAttributeId(attributeId: string, {
-    include,
-  }: {
-    include: Array<string>;
-  } = { include: [] }) {
+  public async listByAttributeId(
+    attributeId: string,
+    {
+      include,
+    }: {
+      include: Array<string>;
+    } = { include: [] },
+  ) {
     const response = this.request({
       method: 'GET',
       path: `/v1/catalogs/${this.apiOptions.config.catalogId}/attributes/${attributeId}/elements`,

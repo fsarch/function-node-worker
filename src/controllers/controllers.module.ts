@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ExecutionsModule } from './executions/executions.module.js';
 
 @Module({
-
-  imports: [ExecutionsModule]
+  imports: [ExecutionsModule],
 })
 export class ControllersModule {}

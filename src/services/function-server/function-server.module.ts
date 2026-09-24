@@ -1,7 +1,7 @@
+import { ModuleConfiguration } from '@fsarch/server/configuration';
 import { Module } from '@nestjs/common';
+import Joi from 'joi';
 import { FunctionServerService } from './function-server.service.js';
-import { ModuleConfiguration } from "@fsarch/server/configuration";
-import Joi from "joi";
 
 @Module({
   providers: [FunctionServerService],
@@ -18,7 +18,7 @@ import Joi from "joi";
             client_id: Joi.string().required(),
             client_secret: Joi.string().required(),
           }).required(),
-        })
+        }),
       ),
       name: 'function_server',
     }),

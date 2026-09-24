@@ -1,9 +1,7 @@
-import { TApiOptions, TRequestFnc } from "../api.type.js";
-import {
-  WorkerMetaProductServerConfigDto,
-} from "../../../../function-server/function-server.types.js";
-import { apiUtils } from "../api.utils.js";
-import { ProductAttributeElementApi } from "./ProductAttributeElement.api.js";
+import { WorkerMetaProductServerConfigDto } from '../../../../function-server/function-server.types.js';
+import { TApiOptions, TRequestFnc } from '../api.type.js';
+import { apiUtils } from '../api.utils.js';
+import { ProductAttributeElementApi } from './ProductAttributeElement.api.js';
 
 export class ProductAttributeApi {
   private readonly request: TRequestFnc;
@@ -19,5 +17,4 @@ export class ProductAttributeApi {
 
     this.elements = new ProductAttributeElementApi(apiOptions);
   }
-
 }

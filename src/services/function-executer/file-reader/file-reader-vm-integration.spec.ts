@@ -1,6 +1,6 @@
-import { jest } from '@jest/globals';
-import { FileReader } from './file-reader';
 import * as vm from 'node:vm';
+import { vi } from 'vitest';
+import { FileReader } from './file-reader';
 
 describe('FileReader Integration with VM Context', () => {
   it('should work in VM context like the function executor', async () => {
@@ -8,8 +8,8 @@ describe('FileReader Integration with VM Context', () => {
       FileReader,
       Blob,
       console: {
-        log: jest.fn()
-      }
+        log: vi.fn(),
+      },
     };
 
     vm.createContext(context);
@@ -40,7 +40,7 @@ describe('FileReader Integration with VM Context', () => {
     `;
 
     const result = await vm.runInContext(code, context);
-    
+
     expect(result.success).toBe(true);
     expect(result.result).toBe('Hello, World!');
     expect(result.readyState).toBe(2); // FileReader.DONE
@@ -50,7 +50,7 @@ describe('FileReader Integration with VM Context', () => {
     const context = {
       FileReader,
       Blob,
-      Buffer: Buffer
+      Buffer: Buffer,
     };
 
     vm.createContext(context);
@@ -81,7 +81,7 @@ describe('FileReader Integration with VM Context', () => {
     `;
 
     const result = await vm.runInContext(code, context);
-    
+
     expect(result.success).toBe(true);
     expect(result.isDataURL).toBe(true);
     expect(typeof result.result).toBe('string');
@@ -92,7 +92,7 @@ describe('FileReader Integration with VM Context', () => {
       FileReader,
       Blob,
       TextDecoder: TextDecoder,
-      ArrayBuffer: ArrayBuffer
+      ArrayBuffer: ArrayBuffer,
     };
 
     vm.createContext(context);
@@ -127,7 +127,7 @@ describe('FileReader Integration with VM Context', () => {
     `;
 
     const result = await vm.runInContext(code, context);
-    
+
     expect(result.success).toBe(true);
     expect(result.result).toBe('Hello');
     expect(result.isArrayBuffer).toBe(true);
@@ -136,7 +136,7 @@ describe('FileReader Integration with VM Context', () => {
   it('should handle abort operation in VM context', async () => {
     const context = {
       FileReader,
-      Blob
+      Blob,
     };
 
     vm.createContext(context);
@@ -169,7 +169,7 @@ describe('FileReader Integration with VM Context', () => {
     `;
 
     const result = await vm.runInContext(code, context);
-    
+
     expect(result.success).toBe(true);
     expect(result.aborted).toBe(true);
     expect(result.readyState).toBe(2); // FileReader.DONE
@@ -178,7 +178,7 @@ describe('FileReader Integration with VM Context', () => {
 
   it('should handle FileReader constants in VM context', async () => {
     const context = {
-      FileReader
+      FileReader,
     };
 
     vm.createContext(context);
@@ -201,7 +201,7 @@ describe('FileReader Integration with VM Context', () => {
     `;
 
     const result = vm.runInContext(code, context);
-    
+
     expect(result.staticConstants).toEqual({ EMPTY: 0, LOADING: 1, DONE: 2 });
     expect(result.instanceConstants).toEqual({ EMPTY: 0, LOADING: 1, DONE: 2 });
     expect(result.initialState).toBe(0);

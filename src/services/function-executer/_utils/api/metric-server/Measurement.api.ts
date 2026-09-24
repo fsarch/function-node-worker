@@ -1,6 +1,6 @@
-import { TApiOptions } from "../api.type.js";
-import { WorkerMetaMetricServerConfigDto } from "../../../../function-server/function-server.types.js";
-import { apiUtils } from "../api.utils.js";
+import { WorkerMetaMetricServerConfigDto } from '../../../../function-server/function-server.types.js';
+import { TApiOptions } from '../api.type.js';
+import { apiUtils } from '../api.utils.js';
 
 export type CreateMeasurementDto = {
   metricId: string;
@@ -50,7 +50,10 @@ export class MeasurementApi {
    * Create a single measurement for a specific metric
    * POST /metrics/{metricId}/measurements
    */
-  async create(metricId: string, data: CreateMeasurementDto): Promise<MeasurementDto> {
+  async create(
+    metricId: string,
+    data: CreateMeasurementDto,
+  ): Promise<MeasurementDto> {
     return this.request({
       method: 'POST',
       path: `/metrics/${metricId}/measurements`,
@@ -62,7 +65,9 @@ export class MeasurementApi {
    * Bulk create multiple measurements
    * POST /measurements/_actions/bulk
    */
-  async bulkCreate(measurements: Array<CreateMeasurementDto>): Promise<BulkCreateMeasurementResultDto> {
+  async bulkCreate(
+    measurements: Array<CreateMeasurementDto>,
+  ): Promise<BulkCreateMeasurementResultDto> {
     return this.request({
       method: 'POST',
       path: `/measurements/_actions/bulk`,

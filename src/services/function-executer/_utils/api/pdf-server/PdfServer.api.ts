@@ -1,22 +1,18 @@
-import { TApiOptions } from "../api.type.js";
-import { WorkerMetaPdfServerConfigDto } from "../../../../function-server/function-server.types.js";
+import { WorkerMetaPdfServerConfigDto } from '../../../../function-server/function-server.types.js';
+import { TApiOptions } from '../api.type.js';
 
 type TPdfRenderOptions = {
   viewport: {
     width: number;
     height: number;
   };
-  export: {
-
-  };
+  export: {};
 };
 
 export class PdfServerApi {
   constructor(
     private readonly apiOptions: TApiOptions<WorkerMetaPdfServerConfigDto>,
-  ) {
-
-  }
+  ) {}
 
   async renderPdf(
     html: string,

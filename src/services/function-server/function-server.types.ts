@@ -19,32 +19,37 @@ export type FunctionVersionDto = {
 };
 
 export type WorkerMetaPdfServerConfigDto = {
-  type: 'pdf-server',
+  type: 'pdf-server';
   url: string;
 };
 
 export type WorkerMetaMaterialTracingServerConfigDto = {
-  type: 'material-tracing-server',
+  type: 'material-tracing-server';
   url: string;
 };
 
 export type WorkerMetaProductServerConfigDto = {
-  type: 'product-server',
+  type: 'product-server';
   url: string;
   catalogId: string;
 };
 
 export type WorkerMetaPrinterServerConfigDto = {
-  type: 'printer-server',
+  type: 'printer-server';
   url: string;
 };
 
 export type WorkerMetaMetricServerConfigDto = {
-  type: 'metric-server',
+  type: 'metric-server';
   url: string;
 };
 
-export type WorkerMetaApiConfigDto = WorkerMetaPdfServerConfigDto | WorkerMetaMaterialTracingServerConfigDto | WorkerMetaProductServerConfigDto | WorkerMetaPrinterServerConfigDto | WorkerMetaMetricServerConfigDto;
+export type WorkerMetaApiConfigDto =
+  | WorkerMetaPdfServerConfigDto
+  | WorkerMetaMaterialTracingServerConfigDto
+  | WorkerMetaProductServerConfigDto
+  | WorkerMetaPrinterServerConfigDto
+  | WorkerMetaMetricServerConfigDto;
 
 export type WorkerMetaDto = {
   api: {

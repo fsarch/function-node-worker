@@ -93,7 +93,9 @@ export class FileReader {
   /**
    * Internal method to start the reading process
    */
-  private startReading(readOperation: () => Promise<string | ArrayBuffer>): void {
+  private startReading(
+    readOperation: () => Promise<string | ArrayBuffer>,
+  ): void {
     if (this.readyState === FileReader.LOADING) {
       throw new Error('The FileReader is already reading');
     }
@@ -113,7 +115,7 @@ export class FileReader {
         }
 
         const result = await readOperation();
-        
+
         if (this.aborted) {
           return;
         }
@@ -141,7 +143,7 @@ export class FileReader {
    */
   private fireEvent(type: string, eventData?: any): void {
     const event = this.createEvent(type, eventData);
-    
+
     switch (type) {
       case 'load':
         if (this.onload) {
@@ -188,7 +190,7 @@ export class FileReader {
         timeStamp: Date.now(),
       } as ErrorEvent;
     }
-    
+
     if (type === 'progress') {
       return {
         type,

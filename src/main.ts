@@ -1,5 +1,5 @@
-import { AppModule } from './app.module.js';
 import { FsArchAppBuilder } from '@fsarch/server';
+import { AppModule } from './app.module.js';
 
 async function bootstrap() {
   const app = await new FsArchAppBuilder(AppModule, {
