@@ -1,17 +1,12 @@
 import { FsArchAppBuilder } from '@fsarch/server';
-import { AppModule } from './app.module.js';
+import { descriptor } from './lib/index.js';
 
 async function bootstrap() {
-  const app = await new FsArchAppBuilder(AppModule, {
+  const app = await new FsArchAppBuilder(descriptor.module.register(), {
     name: 'Function-Server',
     version: '1.0.0',
   })
-    .addSwagger({
-      title: 'Function-Server',
-      description: 'The Function-Server API description',
-      version: '1.0',
-      path: 'docs',
-    })
+    .addSwagger(descriptor.swagger)
     .enableAuth()
     .build();
 

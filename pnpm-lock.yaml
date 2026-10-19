@@ -167,8 +167,8 @@ importers:
   .:
     dependencies:
       '@fsarch/server':
-        specifier: ^0.3.3
-        version: 0.3.3(@swc/core@1.16.2)(@types/node@26.6.2)(class-transformer@0.5.1)(class-validator@0.15.1)(hono@4.13.8)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typescript@6.0.3)
+        specifier: ^0.5.1
+        version: 0.5.1(@swc/core@1.16.2)(@types/node@26.6.2)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typescript@6.0.3)
       '@nestjs/common':
         specifier: ^12.1.0
         version: 12.1.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -265,11 +265,6 @@ packages:
     peerDependenciesMeta:
       chokidar:
         optional: true
-
-  '@angular-devkit/schematics-cli@22.1.8':
-    resolution: {integrity: sha512-SsGG8ompVzprmYE9sHi2L7DYZ+i1sD+YDfun6Rg2vkTCusejtD4SSGVxwuR6++dT22ZpN16OqUTmii/0bhE4xA==}
-    engines: {node: ^22.22.3 || ^24.15.0 || >=26.0.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
-    hasBin: true
 
   '@angular-devkit/schematics-cli@22.2.0':
     resolution: {integrity: sha512-BGKAyxEpbZYKtCPwCMv8B9TPYb8qKHUZ2BRi61cfbMGcsrKPU4nHCPlz7Z84yDENuuQERZJh12p95mlkMC69yw==}
@@ -369,8 +364,8 @@ packages:
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
     engines: {node: '>=0.1.90'}
 
-  '@fsarch/server@0.3.3':
-    resolution: {integrity: sha512-Ju8g8y4fLJFP9SaC32kIFkoNiwCLEFNePN43hQoxgQMvKrWqLdbWtOg2YVcrCYyhjNOldI6g66a1+dV+409JRg==}
+  '@fsarch/server@0.5.1':
+    resolution: {integrity: sha512-Zyb9chTNZbY6ycZd4BDqUGfSWCwImrQ5FasHXc1/qKt7+iAwVgrQkR1w87G/KedyhWXXlFK+npWCT/GTX5QGYQ==}
     engines: {node: '>=24.0.0'}
     hasBin: true
 
@@ -498,15 +493,6 @@ packages:
       '@types/node':
         optional: true
 
-  '@inquirer/prompts@8.5.2':
-    resolution: {integrity: sha512-IYR/3C/paEVVQYQvdDlFZVjRCJVYHHON0XXMH91KO9GSxs0TdKYWlUdvfQl2EfAHDxUaN3IBffkE/BDTh5nJ6g==}
-    engines: {node: '>=23.5.0 || ^22.13.0 || ^20.17.0'}
-    peerDependencies:
-      '@types/node': '>=18'
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-
   '@inquirer/prompts@8.7.2':
     resolution: {integrity: sha512-QoRB4wFIjgH5iOhSjoIKMkTvSHDuV+O3OITlIqAYO0oK5x364GJILXiMBvlPiE+klg7Xx9tq5XVqQHcGUDYYPA==}
     engines: {node: '>=23.5.0 || ^22.13.0 || ^20.17.0'}
@@ -578,26 +564,22 @@ packages:
   '@microsoft/tsdoc@0.17.0':
     resolution: {integrity: sha512-p68VexhnH7ojf3U27RdryUDqnKJgKaWUbCL96vJR7N0mqDuhKG5OIECk3sCPPdynxjk+yoVhRkScqtv5KQjzsw==}
 
-  '@modelcontextprotocol/core@2.0.0':
-    resolution: {integrity: sha512-pJCEwGG7Lfr/+PQp9ZTwKXNeO5wzbfKL7H3MYpCorM4oFBoQrdjnBgEoqG+RjhsvS1FKrDbKux+M1HhlnGWqcA==}
+  '@modelcontextprotocol/core@2.3.1':
+    resolution: {integrity: sha512-laVmIhPGpWi7rG9q+0UigblRN0Hws/Yjlb6qLFtVqryXVLkc4h+yN8z731POD2LnAGQlFe7/tXhUm7Bi0YB91g==}
     engines: {node: '>=20'}
 
-  '@modelcontextprotocol/node@2.0.0':
-    resolution: {integrity: sha512-Y4hAC2XdGDUdDOCbLDOCA4+aL3NUldjsOWlDL/YwpAxrPhRm1xHd7lZ+mLacvZ9t3PaH28wgNoaLQGrIk1P2pg==}
+  '@modelcontextprotocol/node@2.1.1':
+    resolution: {integrity: sha512-EY92OAXN2xYL7tNS/MVsWJW1v8VHAPwl9B4Ca3pCrjmvqyC+S1C/6UHsMxF2GoFPraS5Yyg56vFz9brVpFojMA==}
     engines: {node: '>=20'}
     peerDependencies:
-      '@modelcontextprotocol/server': ^2.0.0
-      hono: ^4.11.4
-    peerDependenciesMeta:
-      hono:
-        optional: true
+      '@modelcontextprotocol/server': ^2.3.0
 
-  '@modelcontextprotocol/server@2.0.0':
-    resolution: {integrity: sha512-YhHWdHfpFMQfd0prsEnxKeS3Qz3ytIGmsS0sth4KDjnacIT7hxk6hXHkJ9KysxlkvTM+WZAtQbbcUhdoP4Hvtw==}
+  '@modelcontextprotocol/server@2.3.1':
+    resolution: {integrity: sha512-e59MfWuSssj6DoQ96JCTqdW1AXT5/XtnTl0WWd6MU1Ka434fFUGGosCLJbGNySDhHGvxQWoRWK137FXYFkYNWw==}
     engines: {node: '>=20'}
 
-  '@nestjs/cli@12.0.5':
-    resolution: {integrity: sha512-28PJP/dYqGdAZoLbGgJORY9CxqkYBN449WKOUiYAXKwtSEAq7jJChtHCJYo1jLMwM0mwKqCjpBYIAWoHzyhSxw==}
+  '@nestjs/cli@12.0.6':
+    resolution: {integrity: sha512-qf+9UUBv0+ciGPN87Z+D9JHOJN3EofwgfFlhKzHpu1qitEEtfHxiQ2ChAU5vxkXvelc9yV1tyDZdH2fkTgxy4A==}
     engines: {node: '>= 20.11'}
     hasBin: true
     peerDependencies:
@@ -627,8 +609,8 @@ packages:
       webpack-node-externals:
         optional: true
 
-  '@nestjs/cli@12.0.6':
-    resolution: {integrity: sha512-qf+9UUBv0+ciGPN87Z+D9JHOJN3EofwgfFlhKzHpu1qitEEtfHxiQ2ChAU5vxkXvelc9yV1tyDZdH2fkTgxy4A==}
+  '@nestjs/cli@12.0.8':
+    resolution: {integrity: sha512-iqm+KXb8cnpnlD4hMBf1w2/4i1GSs0DCLI7oyP4MTmwf9KmjTG1SpAjkl/D+kKuUToycBrMF4+eSwyPVdTMGKQ==}
     engines: {node: '>= 20.11'}
     hasBin: true
     peerDependencies:
@@ -2755,15 +2737,6 @@ snapshots:
     optionalDependencies:
       chokidar: 5.0.0
 
-  '@angular-devkit/schematics-cli@22.1.8(@types/node@26.6.2)(chokidar@5.0.0)':
-    dependencies:
-      '@angular-devkit/core': 22.1.8(chokidar@5.0.0)
-      '@angular-devkit/schematics': 22.1.8(chokidar@5.0.0)
-      '@inquirer/prompts': 8.5.2(@types/node@26.6.2)
-    transitivePeerDependencies:
-      - '@types/node'
-      - chokidar
-
   '@angular-devkit/schematics-cli@22.2.0(@types/node@26.6.2)(chokidar@5.0.0)':
     dependencies:
       '@angular-devkit/core': 22.2.0(chokidar@5.0.0)
@@ -2848,13 +2821,13 @@ snapshots:
   '@colors/colors@1.5.0':
     optional: true
 
-  '@fsarch/server@0.3.3(@swc/core@1.16.2)(@types/node@26.6.2)(class-transformer@0.5.1)(class-validator@0.15.1)(hono@4.13.8)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typescript@6.0.3)':
+  '@fsarch/server@0.5.1(@swc/core@1.16.2)(@types/node@26.6.2)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typescript@6.0.3)':
     dependencies:
       '@grpc/grpc-js': 1.14.5
-      '@modelcontextprotocol/core': 2.0.0
-      '@modelcontextprotocol/node': 2.0.0(@modelcontextprotocol/server@2.0.0)(hono@4.13.8)
-      '@modelcontextprotocol/server': 2.0.0
-      '@nestjs/cli': 12.0.5(@swc/core@1.16.2)(@types/node@26.6.2)
+      '@modelcontextprotocol/core': 2.3.1
+      '@modelcontextprotocol/node': 2.1.1(@modelcontextprotocol/server@2.3.1)
+      '@modelcontextprotocol/server': 2.3.1
+      '@nestjs/cli': 12.0.8(@swc/core@1.16.2)(@types/node@26.6.2)
       '@nestjs/common': 12.1.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/config': 12.0.1(@nestjs/common@12.1.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
       '@nestjs/core': 12.1.0(@nestjs/common@12.1.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.1.0)(@nestjs/platform-express@12.1.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -2876,7 +2849,7 @@ snapshots:
       '@opentelemetry/sdk-node': 0.222.0(@opentelemetry/api@1.9.1)
       '@opentelemetry/sdk-trace-base': 2.11.0(@opentelemetry/api@1.9.1)
       '@opentelemetry/semantic-conventions': 1.43.0
-      '@rekog/mcp-nest': 2.0.7(@modelcontextprotocol/core@2.0.0)(@modelcontextprotocol/node@2.0.0(@modelcontextprotocol/server@2.0.0)(hono@4.13.8))(@modelcontextprotocol/server@2.0.0)(@nestjs/common@12.1.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.1.0)(@nestjs/microservices@12.1.0)(express@5.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(zod@4.6.5)
+      '@rekog/mcp-nest': 2.0.7(@modelcontextprotocol/core@2.3.1)(@modelcontextprotocol/node@2.1.1(@modelcontextprotocol/server@2.3.1))(@modelcontextprotocol/server@2.3.1)(@nestjs/common@12.1.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.1.0)(@nestjs/microservices@12.1.0)(express@5.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(zod@4.6.5)
       better-sqlite3: 13.0.3
       commander: 15.0.0
       cron: 4.4.0
@@ -2908,7 +2881,6 @@ snapshots:
       - class-transformer
       - class-validator
       - fork-ts-checker-webpack-plugin
-      - hono
       - ioredis
       - kafkajs
       - mongodb
@@ -3040,21 +3012,6 @@ snapshots:
     optionalDependencies:
       '@types/node': 26.6.2
 
-  '@inquirer/prompts@8.5.2(@types/node@26.6.2)':
-    dependencies:
-      '@inquirer/checkbox': 5.2.5(@types/node@26.6.2)
-      '@inquirer/confirm': 6.3.2(@types/node@26.6.2)
-      '@inquirer/editor': 5.3.3(@types/node@26.6.2)
-      '@inquirer/expand': 5.1.5(@types/node@26.6.2)
-      '@inquirer/input': 5.1.6(@types/node@26.6.2)
-      '@inquirer/number': 4.2.3(@types/node@26.6.2)
-      '@inquirer/password': 5.2.2(@types/node@26.6.2)
-      '@inquirer/rawlist': 5.3.5(@types/node@26.6.2)
-      '@inquirer/search': 4.3.3(@types/node@26.6.2)
-      '@inquirer/select': 5.2.5(@types/node@26.6.2)
-    optionalDependencies:
-      '@types/node': 26.6.2
-
   '@inquirer/prompts@8.7.2(@types/node@26.6.2)':
     dependencies:
       '@inquirer/checkbox': 5.2.5(@types/node@26.6.2)
@@ -3123,27 +3080,26 @@ snapshots:
 
   '@microsoft/tsdoc@0.17.0': {}
 
-  '@modelcontextprotocol/core@2.0.0':
+  '@modelcontextprotocol/core@2.3.1':
     dependencies:
       zod: 4.6.5
 
-  '@modelcontextprotocol/node@2.0.0(@modelcontextprotocol/server@2.0.0)(hono@4.13.8)':
+  '@modelcontextprotocol/node@2.1.1(@modelcontextprotocol/server@2.3.1)':
     dependencies:
       '@hono/node-server': 1.19.17(hono@4.13.8)
-      '@modelcontextprotocol/server': 2.0.0
-    optionalDependencies:
+      '@modelcontextprotocol/server': 2.3.1
       hono: 4.13.8
 
-  '@modelcontextprotocol/server@2.0.0':
+  '@modelcontextprotocol/server@2.3.1':
     dependencies:
-      '@modelcontextprotocol/core': 2.0.0
+      '@modelcontextprotocol/core': 2.3.1
       zod: 4.6.5
 
-  '@nestjs/cli@12.0.5(@swc/core@1.16.2)(@types/node@26.6.2)':
+  '@nestjs/cli@12.0.6(@swc/core@1.16.2)(@types/node@26.6.2)':
     dependencies:
-      '@angular-devkit/core': 22.1.8(chokidar@5.0.0)
-      '@angular-devkit/schematics': 22.1.8(chokidar@5.0.0)
-      '@angular-devkit/schematics-cli': 22.1.8(@types/node@26.6.2)(chokidar@5.0.0)
+      '@angular-devkit/core': 22.2.0(chokidar@5.0.0)
+      '@angular-devkit/schematics': 22.2.0(chokidar@5.0.0)
+      '@angular-devkit/schematics-cli': 22.2.0(@types/node@26.6.2)(chokidar@5.0.0)
       '@inquirer/prompts': 8.7.2(@types/node@26.6.2)
       '@nestjs/schematics': 12.0.5(chokidar@5.0.0)(typescript@6.0.3)
       ansis: 4.4.0
@@ -3162,7 +3118,7 @@ snapshots:
       - '@types/node'
       - prettier
 
-  '@nestjs/cli@12.0.6(@swc/core@1.16.2)(@types/node@26.6.2)':
+  '@nestjs/cli@12.0.8(@swc/core@1.16.2)(@types/node@26.6.2)':
     dependencies:
       '@angular-devkit/core': 22.2.0(chokidar@5.0.0)
       '@angular-devkit/schematics': 22.2.0(chokidar@5.0.0)
@@ -3610,11 +3566,11 @@ snapshots:
 
   '@protobufjs/utf8@1.1.2': {}
 
-  '@rekog/mcp-nest@2.0.7(@modelcontextprotocol/core@2.0.0)(@modelcontextprotocol/node@2.0.0(@modelcontextprotocol/server@2.0.0)(hono@4.13.8))(@modelcontextprotocol/server@2.0.0)(@nestjs/common@12.1.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.1.0)(@nestjs/microservices@12.1.0)(express@5.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(zod@4.6.5)':
+  '@rekog/mcp-nest@2.0.7(@modelcontextprotocol/core@2.3.1)(@modelcontextprotocol/node@2.1.1(@modelcontextprotocol/server@2.3.1))(@modelcontextprotocol/server@2.3.1)(@nestjs/common@12.1.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.1.0)(@nestjs/microservices@12.1.0)(express@5.2.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(zod@4.6.5)':
     dependencies:
-      '@modelcontextprotocol/core': 2.0.0
-      '@modelcontextprotocol/node': 2.0.0(@modelcontextprotocol/server@2.0.0)(hono@4.13.8)
-      '@modelcontextprotocol/server': 2.0.0
+      '@modelcontextprotocol/core': 2.3.1
+      '@modelcontextprotocol/node': 2.1.1(@modelcontextprotocol/server@2.3.1)
+      '@modelcontextprotocol/server': 2.3.1
       '@nestjs/common': 12.1.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 12.1.0(@nestjs/common@12.1.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/microservices@12.1.0)(@nestjs/platform-express@12.1.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/microservices': 12.1.0(@grpc/grpc-js@1.14.5)(@nestjs/common@12.1.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@12.1.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
