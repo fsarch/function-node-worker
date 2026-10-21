@@ -167,8 +167,8 @@ importers:
   .:
     dependencies:
       '@fsarch/server':
-        specifier: ^0.5.1
-        version: 0.5.1(@swc/core@1.16.2)(@types/node@26.6.2)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typescript@6.0.3)
+        specifier: ^0.5.2
+        version: 0.5.2(@swc/core@1.16.2)(@types/node@26.6.2)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typescript@6.0.3)
       '@nestjs/common':
         specifier: ^12.1.0
         version: 12.1.0(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -364,8 +364,8 @@ packages:
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
     engines: {node: '>=0.1.90'}
 
-  '@fsarch/server@0.5.1':
-    resolution: {integrity: sha512-Zyb9chTNZbY6ycZd4BDqUGfSWCwImrQ5FasHXc1/qKt7+iAwVgrQkR1w87G/KedyhWXXlFK+npWCT/GTX5QGYQ==}
+  '@fsarch/server@0.5.2':
+    resolution: {integrity: sha512-/fpFNg2lItK5UPEZ2Hqb2KjHR5NtXNs+P83e1ZXPpybGd3gbqKWyYmg6xaEZnMA1ikfrSj/KWEO5DHMJE8gG+w==}
     engines: {node: '>=24.0.0'}
     hasBin: true
 
@@ -2821,7 +2821,7 @@ snapshots:
   '@colors/colors@1.5.0':
     optional: true
 
-  '@fsarch/server@0.5.1(@swc/core@1.16.2)(@types/node@26.6.2)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typescript@6.0.3)':
+  '@fsarch/server@0.5.2(@swc/core@1.16.2)(@types/node@26.6.2)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typescript@6.0.3)':
     dependencies:
       '@grpc/grpc-js': 1.14.5
       '@modelcontextprotocol/core': 2.3.1
